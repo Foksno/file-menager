@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api.js';
 
+// kolor kropki zależy od rodzaju operacji
+const KIND = {
+  'nowy folder': 'add',
+  'nowy plik': 'add',
+  upload: 'add',
+  edycja: 'edit',
+  'zmiana nazwy': 'edit',
+  usunięcie: 'remove',
+};
+
 // dane z activity-service; odświeżane razem z listą plików
 export default function ActivityPanel({ version }) {
   const [events, setEvents] = useState([]);
@@ -23,9 +33,11 @@ export default function ActivityPanel({ version }) {
       {!error && !events.length && <p className="muted">Brak zmian</p>}
       <ul>
         {events.map((event, i) => (
-          <li key={`${i}-${event.time}`}>
-            <time>{new Date(event.time).toLocaleTimeString('pl-PL')}</time>{' '}
-            <b>{event.action}</b>{' '}
+          <li key={`${i}-${event.time}`} className={`kind-${KIND[event.action] ?? 'edit'}`}>
+            <div className="activity-head">
+              <b>{event.action}</b>
+              <time>{new Date(event.time).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</time>
+            </div>
             <span className="muted">
               /{event.path ? `${event.path}/` : ''}
               {event.name}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { api } from '../api.js';
+import { LogoIcon } from './Icons.jsx';
 
 // logowanie i zakładanie konta w jednym formularzu
 export default function LoginPage({ onLoggedIn }) {
@@ -34,8 +35,11 @@ export default function LoginPage({ onLoggedIn }) {
   return (
     <main className="auth">
       <form className="auth-card" onSubmit={submit}>
-        <h1>
-          <span className="logo">📁</span> Filemenager
+        <h1 className="brand">
+          <span className="logo">
+            <LogoIcon />
+          </span>
+          Filemenager
         </h1>
         <h2>{isRegister ? 'Załóż konto' : 'Zaloguj się'}</h2>
 

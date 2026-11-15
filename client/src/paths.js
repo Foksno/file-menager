@@ -1,11 +1,21 @@
 // bieżący folder trzymamy w hashu: #/a/b -> "a/b"
 
+// ręcznie wpisany adres może mieć uszkodzone kodowanie (np. "%E0%A4%A") - wtedy zostawiamy tekst
+// bez dekodowania zamiast rzucać wyjątek; serwer i tak odrzuci niepoprawną nazwę
+function safeDecode(part) {
+  try {
+    return decodeURIComponent(part);
+  } catch {
+    return part;
+  }
+}
+
 export function pathFromHash() {
   return window.location.hash
     .slice(1)
     .split('/')
     .filter(Boolean)
-    .map(decodeURIComponent)
+    .map(safeDecode)
     .join('/');
 }
 

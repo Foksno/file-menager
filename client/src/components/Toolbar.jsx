@@ -1,14 +1,11 @@
+import { FolderPlusIcon, FilePlusIcon, UploadIcon } from './Icons.jsx';
+
 export default function Toolbar({ onNewFolder, onNewFile, onUpload, disabled }) {
   return (
     <div className="toolbar">
-      <button type="button" className="btn btn-primary" onClick={onNewFolder} disabled={disabled}>
-        + nowy folder
-      </button>
-      <button type="button" className="btn" onClick={onNewFile} disabled={disabled}>
-        + nowy plik tekstowy
-      </button>
-      <label className={`btn ${disabled ? 'disabled' : ''}`}>
-        ⬆ wyślij pliki
+      <label className={`btn btn-primary ${disabled ? 'disabled' : ''}`}>
+        <UploadIcon />
+        Wyślij pliki
         <input
           type="file"
           multiple
@@ -20,6 +17,14 @@ export default function Toolbar({ onNewFolder, onNewFile, onUpload, disabled }) 
           }}
         />
       </label>
+      <button type="button" className="btn" onClick={onNewFolder} disabled={disabled}>
+        <FolderPlusIcon />
+        Nowy folder
+      </button>
+      <button type="button" className="btn" onClick={onNewFile} disabled={disabled}>
+        <FilePlusIcon />
+        Nowy plik tekstowy
+      </button>
     </div>
   );
 }

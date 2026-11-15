@@ -1,15 +1,16 @@
 import { formatSize, isTextFile } from '../paths.js';
+import { DownloadIcon, EditIcon, TrashIcon, FolderTile, FileTile } from './Icons.jsx';
 
 function ItemActions({ name, isFolder, downloadUrl, onRename, onDelete }) {
   return (
     <div className="actions">
       {!isFolder && (
         <a className="action-btn" href={downloadUrl(name)} title="Pobierz" download>
-          ⬇
+          <DownloadIcon />
         </a>
       )}
       <button type="button" className="action-btn" title="Zmień nazwę" onClick={() => onRename(name)}>
-        ✎
+        <EditIcon />
       </button>
       <button
         type="button"
@@ -17,7 +18,7 @@ function ItemActions({ name, isFolder, downloadUrl, onRename, onDelete }) {
         title="Usuń"
         onClick={() => onDelete(name, isFolder)}
       >
-        ✕
+        <TrashIcon />
       </button>
     </div>
   );
@@ -25,7 +26,13 @@ function ItemActions({ name, isFolder, downloadUrl, onRename, onDelete }) {
 
 export default function FileGrid({ folders, files, folderHref, onEdit, ...actions }) {
   if (!folders.length && !files.length) {
-    return <p className="empty">Ten folder jest pusty.</p>;
+    return (
+      <div className="empty">
+        <FolderTile />
+        <p>Ten folder jest pusty</p>
+        <p className="muted">Wyślij pliki albo utwórz nowy folder przyciskami po lewej.</p>
+      </div>
+    );
   }
 
   return (
@@ -37,7 +44,7 @@ export default function FileGrid({ folders, files, folderHref, onEdit, ...action
             {folders.map((folder) => (
               <div className="item" key={folder.name}>
                 <a className="item-link" href={folderHref(folder.name)}>
-                  <span className="icon">📁</span>
+                  <FolderTile />
                   <span className="name">{folder.name}</span>
                 </a>
                 <ItemActions name={folder.name} isFolder {...actions} />
@@ -62,7 +69,7 @@ export default function FileGrid({ folders, files, folderHref, onEdit, ...action
                     disabled={!editable}
                     title={editable ? 'Otwórz w edytorze' : undefined}
                   >
-                    <span className="icon">{editable ? '📝' : '📄'}</span>
+                    <FileTile name={file.name} />
                     <span className="name">{file.name}</span>
                     <span className="meta">
                       {formatSize(file.size)} · {new Date(file.mtime).toLocaleDateString('pl-PL')}

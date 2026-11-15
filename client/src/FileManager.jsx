@@ -8,6 +8,7 @@ import FileGrid from './components/FileGrid.jsx';
 import NameDialog from './components/NameDialog.jsx';
 import TextEditor from './components/TextEditor.jsx';
 import ActivityPanel from './components/ActivityPanel.jsx';
+import { LogoIcon, LogoutIcon } from './components/Icons.jsx';
 
 // widok zalogowanego użytkownika - jego pliki, historia i przyciski
 export default function FileManager({ user, onLogout }) {
@@ -17,7 +18,6 @@ export default function FileManager({ user, onLogout }) {
   const [notice, setNotice] = useState('');
   // zwiększany po każdej zmianie - wymusza ponowne pobranie listy i historii
   const [version, setVersion] = useState(0);
-  const [online, setOnline] = useState(false);
   const [dialog, setDialog] = useState(null);
   const [editing, setEditing] = useState(null);
 
@@ -52,8 +52,6 @@ export default function FileManager({ user, onLogout }) {
   // WebSocket: zmiana zrobiona w innej karcie od razu odświeża widok
   useEffect(() => {
     const socket = io();
-    socket.on('connect', () => setOnline(true));
-    socket.on('disconnect', () => setOnline(false));
     socket.on('changed', refresh);
     return () => socket.disconnect();
   }, []);
@@ -96,13 +94,20 @@ export default function FileManager({ user, onLogout }) {
   return (
     <>
       <header className="topbar">
-        <span className="logo">📁</span>
-        <span className="title">Filemenager</span>
-        <span className={`live ${online ? 'on' : ''}`}>
-          {online ? '● na żywo' : '○ offline'}
+        <span className="brand">
+          <span className="logo">
+            <LogoIcon />
+          </span>
+          Filemenager
         </span>
-        <span className="user">👤 {user.login}</span>
-        <button type="button" className="btn btn-small" onClick={onLogout}>
+        <span className="user">
+          <span className="avatar" aria-hidden="true">
+            {user.login[0].toUpperCase()}
+          </span>
+          <span className="user-name">{user.login}</span>
+        </span>
+        <button type="button" className="btn btn-ghost btn-small" onClick={onLogout}>
+          <LogoutIcon />
           Wyloguj
         </button>
       </header>

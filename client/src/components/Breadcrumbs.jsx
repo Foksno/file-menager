@@ -3,7 +3,7 @@ import { hashFor } from '../paths.js';
 // ścieżka nad plikami - każdy folder nadrzędny to link
 export default function Breadcrumbs({ path }) {
   const parts = path.split('/').filter(Boolean);
-  const crumbs = [{ name: 'upload', href: hashFor('') }].concat(
+  const crumbs = [{ name: 'Moje pliki', href: hashFor('') }].concat(
     parts.map((name, i) => ({ name, href: hashFor(parts.slice(0, i + 1).join('/')) }))
   );
 
