@@ -1,10 +1,8 @@
-const path = require('path');
 const { createApp } = require('./app');
+const { createPool, migrate } = require('../shared/db');
 
 const PORT = process.env.FILES_PORT || 3001;
 const ACTIVITY_URL = process.env.ACTIVITY_URL || 'http://localhost:3002';
-const UPLOAD_ROOT =
-  process.env.UPLOAD_ROOT || path.join(__dirname, '..', '..', 'upload');
 
 // każda zmiana trafia do activity-service; jego awaria nie blokuje operacji na plikach
 async function notify(event) {
@@ -20,6 +18,15 @@ async function notify(event) {
   }
 }
 
-createApp({ uploadRoot: UPLOAD_ROOT, notify }).listen(PORT, () => {
-  console.log(`files-service na porcie ${PORT}, katalog: ${UPLOAD_ROOT}`);
+async function main() {
+  const db = createPool();
+  await migrate(db);
+  createApp({ db, notify }).listen(PORT, () => {
+    console.log(`files-service na porcie ${PORT} (PostgreSQL)`);
+  });
+}
+
+main().catch((err) => {
+  console.error('files-service nie wystartował:', err.message);
+  process.exit(1);
 });

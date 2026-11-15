@@ -59,6 +59,87 @@ body {
   color: var(--ok);
 }
 
+.topbar .user {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.btn.btn-small {
+  width: auto;
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+/* ekran logowania */
+.auth {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(360px, 100%);
+  padding: 28px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.auth-card h1 {
+  font-size: 20px;
+}
+
+.auth-card h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.auth-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.auth-card input {
+  padding: 10px 12px;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.auth-card input:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+.auth-card .notice {
+  margin: 0;
+}
+
+.auth-card .btn {
+  text-align: center;
+}
+
+.auth-card .switch {
+  font-size: 14px;
+  text-align: center;
+}
+
+.link {
+  font: inherit;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .layout {
   display: flex;
   gap: 20px;

@@ -1,7 +1,14 @@
 // wszystkie wywołania REST API w jednym miejscu
 
+// ustawiane przez App - wygasła sesja (401) wraca do ekranu logowania
+let onUnauthorized = () => {};
+export const setUnauthorizedHandler = (fn) => {
+  onUnauthorized = fn;
+};
+
 async function request(url, options) {
   const res = await fetch(url, options);
+  if (res.status === 401 && !url.startsWith('/api/auth/')) onUnauthorized();
   if (!res.ok) {
     let message = `Błąd ${res.status}`;
     try {
@@ -23,6 +30,16 @@ const send = (method, body) => ({
 });
 
 export const api = {
+  // null gdy nikt nie jest zalogowany
+  me: () => request('/api/auth/me').catch(() => null),
+
+  login: (login, password) => request('/api/auth/login', send('POST', { login, password })),
+
+  register: (login, password) =>
+    request('/api/auth/register', send('POST', { login, password })),
+
+  logout: () => request('/api/auth/logout', { method: 'POST' }),
+
   list: (path) => request(`/api/list?${qs({ path })}`),
 
   createFolder: (path, name) => request('/api/folder', send('POST', { path, name })),
